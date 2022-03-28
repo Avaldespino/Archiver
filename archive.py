@@ -1,9 +1,15 @@
 #! /usr/bin/python3
 import os,re,sys
 
-if len(sys.argv) == 1:
+
+
+
+
+
+if len(sys.argv) < 2:
     os.write(2, ("No files are given\n").encode())
     sys.exit(1)
+print(len(sys.argv))
 name = str(sys.argv[1])
 out = name.split('.')
 out = out[0]+".arch"
@@ -14,9 +20,12 @@ for i in range(1,len(sys.argv)):
       contents = f.read()
    byteList = []   
    for char in contents.encode():
-       byteList.append(bin(char)
-   
-   os.write(fileOut, byteList)
+       byteList.append(bin(char))
+
+
+
+                       
+#os.write(fileOut, byteList)
    
                
 #test = "Hello world"
@@ -24,7 +33,7 @@ for i in range(1,len(sys.argv)):
 #test_output = test.encode()
 #byteList = []
 #for char in test_output:
- #   byteList.append(bin(char))
+#byteList.append(bin(char))
 
 #print(byteList)
 
@@ -33,4 +42,4 @@ for i in range(1,len(sys.argv)):
     #print('%x' % int(byte,2)).decode('hex').decode('utf-8')
 
     #print ('%x' % int(byte, 2)).decode('hex').decode('utf-8')
- #   print(chr(int(byte,2)))
+    #print(chr(int(byte,2)))
