@@ -1,33 +1,44 @@
 #! /usr/bin/python3
 import os,re,sys
+    
+def archive(filename):
+    bytelist = []
+    output = []
+    
+    
+    
+
+        
+    #for char in filename.encode():
+       # bytelist.append(bin(char))
+
+        
+    for i in open(filename, 'rb').read():
+        bytelist.append(bin(i))
+
+        
+    output.append((bin(len(bytelist))))
+    for char in bytelist:
+        output.append(char)
+
+    return output
 
 
 
 
 
+def unarchive(byteList):
+    filelength = int(byteList[0],2)
+    print(filelength)
+    
+    f = open("out.txt","w")
+    for i in byteList[1:filelength]:
+        f.write(chr(int(i,2)))
+    
 
-if len(sys.argv) < 2:
-    os.write(2, ("No files are given\n").encode())
-    sys.exit(1)
-print(len(sys.argv))
-name = str(sys.argv[1])
-out = name.split('.')
-out = out[0]+".arch"
-fileOut = os.open(out, os.O_CREAT | os.O_WRONLY)
+byteArray = archive("file1.txt")   
 
-for i in range(1,len(sys.argv)):
-   with open(sys.argv[i], 'r') as f:
-      contents = f.read()
-   byteList = []   
-   for char in contents.encode():
-       byteList.append(bin(char))
-
-
-
-                       
-#os.write(fileOut, byteList)
-   
-               
+unarchive(byteArray)
 #test = "Hello world"
 
 #test_output = test.encode()
