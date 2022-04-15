@@ -1,56 +1,54 @@
 #! /usr/bin/python3
 import os,re,sys
-    
-def archive(filename):
-    bytelist = []
-    output = []
-    
-    
-    
 
+#Takes in list of files and an output file
+#recieve file descriptor for write binary
+#iterate through files
+
+
+def archive(files, outputFile):
+    archOutFile = open(outputFile, 'wb')
+    
+    for file in files:
+        f = open(file,'r')
+        data = bytearray()
+
+        fileNameData = get_data(file, len(file.encode()))
+        data += fileNameData
+        print(data)
+
+        contents = get_data(f.read(), os.path.getsize(file))
+        data += contents
         
-    #for char in filename.encode():
-       # bytelist.append(bin(char))
+        archOutFile.write(data)
+        f.close()
 
+
+    archOutFile.close()
+
+
+
+
+
+#get data and size of data
+#Encode size of data with 8 bytes
+#then encode and add contents
         
-    for i in open(filename, 'rb').read():
-        bytelist.append(bin(i))
+def get_data(data, size):
+    archData = bytearray()
+    archData += bytearray(size.to_bytes(8,'big'))
+    archData += bytearray(data.encode())
 
-        
-    output.append((bin(len(bytelist))))
-    for char in bytelist:
-        output.append(char)
-
-    return output
+    return archData
 
 
+if (len(sys.argv) < 3):
+    os.write(2, "Not enough arguments, ./archive.py <FileoutName> <list of files...>".encode())
+    sys.exit(1)
 
-
-
-def unarchive(byteList):
-    filelength = int(byteList[0],2)
-    print(filelength)
-    
-    f = open("out.txt","w")
-    for i in byteList[1:filelength]:
-        f.write(chr(int(i,2)))
-    
-
-byteArray = archive("file1.txt")   
-
-unarchive(byteArray)
-#test = "Hello world"
-
-#test_output = test.encode()
-#byteList = []
-#for char in test_output:
-#byteList.append(bin(char))
-
-#print(byteList)
-
-
-#for byte in byteList:
-    #print('%x' % int(byte,2)).decode('hex').decode('utf-8')
-
-    #print ('%x' % int(byte, 2)).decode('hex').decode('utf-8')
-    #print(chr(int(byte,2)))
+os.write(1, "Archiving files\n".encode())
+files = sys.argv[2:]
+outFile = sys.argv[1]
+archive(files,outFile)
+os.write(1, "Archived to {}\n".format(sys.argv[1]).encode())
+ 
